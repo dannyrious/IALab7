@@ -123,7 +123,7 @@ def train(trainSet, outputTrain, weights):
     predictions = predict(weights, trainSet)
     weights, error = updateWeight(weights, predictions, trainSet, outputTrain)
     if error == 0:
-      print(i)
+      # print(i)
       return weights
   return 0
 
