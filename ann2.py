@@ -1,5 +1,9 @@
 import fileinput
 import random
+import plotly
+
+import plotly.plotly as py
+import plotly.graph_objs as go
 
 trainSet = []
 testSet = []
@@ -123,7 +127,7 @@ def train(trainSet, outputTrain, weights):
     predictions = predict(weights, trainSet)
     weights, error = updateWeight(weights, predictions, trainSet, outputTrain)
     if error == 0:
-      #print(i)
+      # print(i)
       return weights
   return 0
 
@@ -139,3 +143,56 @@ else:
   for i in prediction:
     print(prediction[i])
   
+aRed = []
+bRed = []
+
+aBlue = []
+bBlue = []
+for i in range(0, len(trainSet)):
+  if outputTrain[i] == 1:
+    aBlue.append(trainSet[i][1])
+    bBlue.append(trainSet[i][2])
+  else:
+    aRed.append(trainSet[i][1])
+    bRed.append(trainSet[i][2])
+
+trace0 = go.Scatter(
+    x = aBlue,
+    y = bBlue,
+    name = '1',
+    mode = 'markers',
+    marker = dict(
+        size = 10,
+        color = 'rgba(255, 0, 0, .8)',
+        line = dict(
+            width = 2,
+            color = 'rgb(0, 0, 0)'
+        )
+    )
+)
+
+trace1 = go.Scatter(
+    x = aRed,
+    y = bRed,
+    name = '0',
+    mode = 'markers',
+    marker = dict(
+        size = 10,
+        color = 'rgba(0, 0, 255, .8)',
+        line = dict(
+            width = 2,
+            color = 'rgb(0, 0, 0)'
+        )
+    )
+)
+
+
+data = [trace0, trace1]
+
+layout = dict(title = 'Styled Scatter',
+              yaxis = dict(zeroline = False),
+              xaxis = dict(zeroline = False)
+             )
+
+fig = dict(data=data, layout=layout)
+py.iplot(fig, filename='styled-scatter')
